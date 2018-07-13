@@ -13,6 +13,12 @@ def get_depute
   doc = Nokogiri::HTML(open("https://wiki.laquadrature.net/Contactez_vos_d%C3%A9put%C3%A9s"))
 
   doc.xpath("//*[@id=\"mw-content-text\"]/ul/li").each do |node|
+
+    # Example of string returned by Nokogiri request:
+    # Jean-Christophe Fromantin (Hauts-de-Seine - UDI) : @JCFromantin ; jcfromantin@assemblee-nationale.fr ;
+    # ^[^\(]+ matches everything before opening parenthesis
+    #  \(([^\)]+)\)  matches parenthesis and in between
+
     fullname = node.text.match(/^[^\(]+/)[0].split
     names << fullname[0]
     surnames << fullname[1, 2].join(' ')
@@ -30,6 +36,3 @@ def get_depute
 end
 
 get_depute
-
-#  \(([^\)]+)\)  match parenthesis and in between
-# ^[^\(]+ everything before parenthesis
